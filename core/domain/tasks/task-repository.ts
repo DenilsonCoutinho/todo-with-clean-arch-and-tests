@@ -9,5 +9,6 @@ export interface ItaskRepository {
   findMany(): Promise<null | task[]>;
   findTaskChecked(): Promise<null | task>;
   updateTask(id: number,isCheckd:boolean): Promise<void>;
+  updateDescriptionTask(id: number,description:string): Promise<void>;
   deleteTask(id: number): Promise<void>;
 }

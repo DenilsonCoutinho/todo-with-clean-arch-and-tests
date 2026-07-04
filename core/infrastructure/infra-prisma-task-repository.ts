@@ -33,6 +33,18 @@ export class InfraPrismaTask implements ItaskRepository {
     });
 
   }
+
+   async updateDescriptionTask(id: number,description:string): Promise<void> {
+     await prisma.task.update({
+      where:{
+        id:id
+      },
+      data: {
+        description: description,
+      },
+    });
+
+  }
   async deleteTask(id: number): Promise<void> {
      await prisma.task.delete({
       where:{

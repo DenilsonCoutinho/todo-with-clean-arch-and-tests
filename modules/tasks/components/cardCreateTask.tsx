@@ -1,27 +1,47 @@
 "use client";
 import { createTask } from "@/actions/createTask";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Plus } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner"
 
 export default function CardCreateTask() {
   const [task, setTask] = useState("");
   async function CreateTask(input: { task: string }) {
-    await createTask(input);
+    try {
+      await createTask(input);
+      toast.success("Tarefa criada com sucesso!",{
+        style:{
+          background:"green",
+          color:"white"
+        }
+      })
+      setTask("")
+    } catch (error) {
+      console.error("Erro ao cria task", error)
+    }
   }
   return (
-    <div className="max-w-96 max-h-42 w-full h-full border rounded-2xl mb-10 p-4">
-      <div className="flex flex-col   gap-3">
-        <h1 className="text-white">Digite sua tarefa:</h1>
-        <Input
-          onChange={(e) => setTask(e.target.value)}
-          value={task}
-          className="py-5 text-white"
-        />
-        <Button onClick={() => CreateTask({ task })} className="cursor-pointer">
-          Salvar
-        </Button>
-      </div>
-    </div>
+    <Card className="rounded-xl border-border/80 bg-[oklch(0.995_0.006_82)] py-0 shadow-sm [--card-spacing:0]">
+      <CardContent className="p-2">
+        <div className="flex gap-2">
+          <Input
+            onChange={(e) => setTask(e.target.value)}
+            value={task}
+            placeholder="Adicionar tarefa"
+            className="h-10 border-0 bg-transparent px-2 text-foreground shadow-none focus-visible:ring-0"
+          />
+          <Button
+            onClick={() => CreateTask({ task })}
+            size="icon"
+            className="size-10 cursor-pointer rounded-lg bg-[oklch(0.62_0.16_38)] text-white hover:bg-[oklch(0.56_0.16_38)]"
+          >
+            <Plus className="size-4" />
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
