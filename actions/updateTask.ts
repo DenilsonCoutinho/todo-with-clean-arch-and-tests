@@ -1,5 +1,5 @@
 "use server";
-import { UpdateTaskUseCase } from "@/core/application/task/update-task-usecase";
+import { UpdateTaskUseCase } from "@/core/application/task/update-ischecked-task-usecase";
 import { InfraPrismaTask } from "@/core/infrastructure/infra-prisma-task-repository";
 import { revalidatePath } from "next/cache";
 

@@ -7,6 +7,6 @@ import { revalidatePath } from "next/cache";
 export async function DeleteTask(id: number) {
     const repository = new InfraPrismaTask();
     const createTask = new DeleterTaskUseCase(repository);
-    await createTask.execute(id);
+    await createTask.execute({id});
     revalidatePath('/')
   }

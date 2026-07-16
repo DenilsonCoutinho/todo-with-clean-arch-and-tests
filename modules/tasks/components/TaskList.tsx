@@ -1,5 +1,5 @@
 "use client";
-import { task } from "@/core/domain/tasks/task-repository";
+import { Task } from "@/core/domain/tasks/task-repository";
 import UpdateTask from "@/actions/updateTask";
 import { useState } from "react";
 import { DeleteTask } from "@/actions/deleteTask";
@@ -8,7 +8,7 @@ import UpdateTaskDescription from "@/actions/updateTaskDescription";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function TaskList({ tasks }: { tasks: task[] }) {
+export default function TaskList({ tasks }: { tasks: Task[] }) {
   const [updatingIds, setUpdatingIds] = useState<Set<number>>(new Set());
   const [isEditing, setIsEditing] = useState<number | null>();
   const [description, setDescription] = useState<string>('');
@@ -28,7 +28,15 @@ export default function TaskList({ tasks }: { tasks: task[] }) {
         }
       })
     } catch (error) {
-      console.error("erro ao deletar task", error);
+      if(error instanceof Error){
+        toast.error("Tarefa editada com sucesso!",{
+        style:{
+          background:"red",
+          color:"white"
+        }
+      })
+      }
+      console.error("erro ao editar task", error);
     }
   
   }
@@ -42,7 +50,20 @@ export default function TaskList({ tasks }: { tasks: task[] }) {
         next.delete(id);
         return next;
       });
+       toast.success("Status atualizado com sucesso!",{
+        style:{
+          background:"green",
+          color:"white"
+        }
+      })
     } catch (error) {
+      if(error instanceof Error){
+        toast.error("erro ao atualizar task!",{
+        style:{
+          background:"red",
+          color:"white"
+        }
+      })}
       console.error("erro ao atualizar task", error);
     }
   }
@@ -50,7 +71,22 @@ export default function TaskList({ tasks }: { tasks: task[] }) {
   async function deleteTask(id: number) {
     try {
       await DeleteTask(id);
+      toast.success("Tarefa deletar com sucesso!",{
+        style:{
+          background:"green",
+          color:"white"
+        }
+      })
     } catch (error) {
+      
+     if(error instanceof Error){
+        toast.error("Tarefa deletar com sucesso!",{
+        style:{
+          background:"red",
+          color:"white"
+        }
+      })}
+      
       console.error("erro ao deletar task", error);
     }
   }
@@ -81,21 +117,6 @@ export default function TaskList({ tasks }: { tasks: task[] }) {
                       onChangeDescription={(e)=>setDescription(e)}
                       onCancelEditing={cancelEditing}
                     />
-                    // <div key={e.id} className="p-4 h-28 border rounded-2xl text-white">
-                    //   <div>{e.description}</div>
-                    //   <div className="flex items-center gap-1">
-                    //     <Switch
-                    //       checked={e.done}
-                    //       disabled={updatingIds.has(e.id)}
-                    //       onCheckedChange={(c) => {
-                    //         updateTask(e.id, c);
-                    //       }}
-                    //       id={`switch-focus-mode-${e.id}`}
-                    //     />
-                    //     <ButtonDeleteTask deleteTask={() => deleteTask(e.id)} />
-                    //     <ButtonEditTask />
-                    //   </div>
-                    // </div>
                   );
                 })}
             </div>

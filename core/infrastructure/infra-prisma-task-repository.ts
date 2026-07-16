@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { ItaskRepository, task } from "../domain/tasks/task-repository";
+import { ItaskRepository, Task } from "../domain/tasks/task-repository";
 
 export class InfraPrismaTask implements ItaskRepository {
   async createTask(task: string): Promise<void> {
@@ -11,7 +11,7 @@ export class InfraPrismaTask implements ItaskRepository {
     });
   }
 
-  async findMany(): Promise<null | task[]> {
+  async findMany(): Promise<null | Task[]> {
     const result = await prisma.task.findMany({ 
       orderBy:{
         id:"asc"
@@ -19,10 +19,8 @@ export class InfraPrismaTask implements ItaskRepository {
     });
     return result;
   }
-  async findTaskChecked(): Promise<null | task> {
-    return null;
-  }
-  async updateTask(id: number,isCheckd:boolean): Promise<void> {
+  
+  async updateIsCheckedTask(id: number,isCheckd:boolean): Promise<void> {
      await prisma.task.update({
       where:{
         id:id

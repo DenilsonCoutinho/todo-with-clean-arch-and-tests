@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { task } from "@/core/domain/tasks/task-repository";
+import { Task } from "@/core/domain/tasks/task-repository";
 import { Check, Pen, Trash, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 interface ItaskItem {
-  task: task;
+  task: Task;
   updateIsDoneTask: (id: number, checked: boolean) => void;
   deleteTask: (id: number) => void;
   updatingIds: Set<number>;
@@ -33,10 +33,11 @@ export default function TaskItem({
   useEffect(() => {
     if (isEdinting) {
       setDescription(task.description);
-      requestAnimationFrame(() => {
+      const frameId =  requestAnimationFrame(() => {
         inputRef.current?.focus();
         inputRef.current?.select();
       });
+      return () => cancelAnimationFrame(frameId);
     }
   }, [isEdinting, task.description]);
   return (

@@ -4,6 +4,6 @@ export class UpdateTaskDescriptionUseCase {
   constructor(private repository: ItaskRepository) {}
 
   async execute(id: number, description: string) {
-    return this.repository.updateDescriptionTask(id, description);
+   return  this.repository.updateDescriptionTask(id, description);
   }
 }
